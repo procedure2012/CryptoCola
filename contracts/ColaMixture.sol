@@ -3,6 +3,11 @@ pragma solidity ^0.5.8;
 import "./ColaFactory.sol";
 
 contract ColaMixture is ColaFactory {
+        modifier onlyOwnerOf(uint _colaId) {
+                require(msg.sender == colaToOwner[_colaId]);
+                _;
+        }
+
         function _triggerCooldown(Cola storage _cola) internal {
                 _cola.readyTime = uint32(now + cooldownTime);
         }

@@ -1,5 +1,5 @@
 {
-  "name": "cryptcola",
+  "name": "cryptocola",
   "version": "1.0.0",
   "description": "first cryptocurrent project",
   "main": "truffle-config.js",
@@ -13,5 +13,18 @@
   "license": "ISC",
   "dependencies": {
     "@openzeppelin/contracts": "^2.4.0"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/procedure2012/CryptoCola.git"
+  },
+  "keywords": [
+    "blockchain",
+    "react"
+  ],
+  "bugs": {
+    "url": "https://github.com/procedure2012/CryptoCola/issues"
+  },
+  "homepage": "https://github.com/procedure2012/CryptoCola#readme"
 }
