@@ -17,10 +17,13 @@ contract ColaPresentation is ColaMixture {
                         }
         }
         
-        function getColaMarket() public view returns(string memory, uint, uint8, uint32, uint) {
+        function getColaMarket(uint _number) public view returns(string memory, uint, uint8, uint32, uint) {
+		uint count = 0;
                 for (uint i = 0; i < colas.length; ++i) 
                         if (colas[i].price > 0) 
-                                return (colas[i].name, colas[i].code, colas[i].level, colas[i].readyTime, colas[i].price);
+				if (count == _number)
+                                	return (colas[i].name, colas[i].code, colas[i].level, colas[i].readyTime, colas[i].price);
+		return ('', 0, 0, 0, 0);
         }
 
         function sellCola(uint _colaId, uint _price) external {

@@ -24,7 +24,7 @@ contract TestColaFactory {
                 uint resultCode;
                 uint8 resultLevel;
                 uint32 resultReadyTime;
-                (resultName, resultCode, resultLevel, resultReadyTime) =
+                (resultName, resultCode, resultLevel, resultReadyTime, ) =
                         colaPresentation.getColaByOwner(expectedOwner, uint(0));
                 string memory expectedName = "test";
                 uint expectedCode = uint(keccak256(abi.encodePacked("test"))) % (10**16);
@@ -47,7 +47,7 @@ contract TestColaFactory {
                 uint resultCode;
                 uint8 resultLevel;
                 uint32 resultReadyTime;
-                (resultName, resultCode, resultLevel, resultReadyTime) =
+                (resultName, resultCode, resultLevel, resultReadyTime, ) =
                         colaPresentation.getColaByOwner(expectedOwner, uint(2));
                 string memory expectedName = "cola3";
                 uint code1 = uint(keccak256(abi.encodePacked("test"))) % (10 ** 16); 
@@ -60,4 +60,23 @@ contract TestColaFactory {
                 Assert.equal(uint(resultLevel), uint(expectedLevel), "The level of cola shoud be updated.");
 
         }
+
+	function testMarket() public {
+		colaPresentation.sellCola(0, (0.004 ether));
+		uint resultPrice;
+		string memory resultName;
+                uint resultCode;
+                uint8 resultLevel;
+                uint32 resultReadyTime;
+		(resultName,resultCode,resultLevel,resultReadyTime,resultPrice) = colaPresentation.getColaMarket(0);
+		uint expectedPrice = 0.004 ether;
+		uint expectedCode = uint(keccak256(abi.encodePacked("test"))) % (10 ** 16);
+
+		Assert.equal(resultCode, expectedCode, "The code of market is wrong.");
+		Assert.equal(resultPrice, expectedPrice, "The price of market is wrong");
+
+		(resultName,resultCode,resultLevel,resultReadyTime,resultPrice) = colaPresentation.getColaMarket(2);
+		Assert.equal(resultCode, 0, "The empty signal is wrong.");
+		Assert.equal(resultPrice, 0, "The empty signal is wrong.");
+	}
 }
