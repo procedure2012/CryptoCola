@@ -12,7 +12,8 @@
   "author": "procedure2012",
   "license": "ISC",
   "dependencies": {
-    "@openzeppelin/contracts": "^2.4.0"
+    "@openzeppelin/contracts": "^2.4.0",
+    "web3": "^1.2.4"
   },
   "devDependencies": {},
   "repository": {
