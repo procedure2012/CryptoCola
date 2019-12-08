@@ -24,40 +24,34 @@ function App() {
 }*/
 
 import React from "react";
-import Web3 from "web3";
-
-var web3js;
-
-if (window.ethereum) {
-	web3js = new Web3(window.ethereum);
-	try {
-		window.ethereum.enable().then(function () {
-			console.log("use allow.");
-		});
-	}
-	catch(e) {
-		console.log("user denied.");
-	}
-}
-else if (window.web3) {
-	web3js = new Web3(window.web3.currentProvider);
-}
-else {
-	alert('You have to install metamask!');
-}
+import ColaFactory from "./contracts/ColaFactory.json";
+import ColaMixture from "./contracts/ColaMixture.json";
+import ColaPresentation from "./contracts/ColaPresentation.json";
+import ColaOwnership from "./contracts/ColaOwnership.json";
 
 class App extends React.Component {
 	constructor(props) {
 		super(props);
+		this.state = { web3js: null, colaFactory: null, colaMixture: null, colaPresentation: null, colaOwnership: null };
 	}
 
 	componentDidMount() {
-		
+		var colaFactoryABI = ColaFactory.abi;
+		var colaMixtureABI = ColaMixture.abi;
+		var colaPresentationABI = ColaPresentation.abi;
+		var colaOwnershipABI = ColaOwnership.abi;
+		this.setState((state, props) => ({
+			web3js: props.web3js,
+			colaFactory: new props.web3js.eth.Contract(colaFactoryABI, "0x88f29Bc914E82Ef1A87825cfE8CABA665f646d12"),
+			colaMixture: new props.web3js.eth.Contract(colaMixtureABI, "0x6B415564b1B281902726624E641d8e819Cb3F968"),
+			colaPresentation: new props.web3js.eth.Contract(colaPresentationABI, "0x630fF42a8869b77BCaceE4774f5d7014f9a6f9a7"),
+			colaOwnership: new props.web3js.eth.Contract(colaOwnershipABI, "0x88f29Bc914E82Ef1A87825cfE8CABA665f646d12")
+		}));
 	}
 
 	render() {
 		return (
-			<div> {console.log(web3js)} </div>
+			<div> {console.log(this.state.colaFactory)} </div>
 		)
 	}
 }

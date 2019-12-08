@@ -3731,10 +3731,63 @@
       "links": {},
       "address": "0xec3Bb0Ac73fc5A0eE77a94e257e6eC19380E4993",
       "transactionHash": "0x31c0371ecf9f41e9c33a0a50a4bc8c727a706433df7c178aa316f2e76e19c51f"
+    },
+    "1575756559227": {
+      "events": {
+        "0xa64b6d0dcd584cf22e064bd7e637a7ebc7fe4f635054a8372c1a56b34b2b728b": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "colaId",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "string",
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "code",
+              "type": "uint256"
+            }
+          ],
+          "name": "NewCola",
+          "type": "event",
+          "signature": "0xa64b6d0dcd584cf22e064bd7e637a7ebc7fe4f635054a8372c1a56b34b2b728b"
+        },
+        "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "previousOwner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferred",
+          "type": "event",
+          "signature": "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0"
+        }
+      },
+      "links": {},
+      "address": "0x6B415564b1B281902726624E641d8e819Cb3F968",
+      "transactionHash": "0x2bfc69511b7b1977a164f7943282daa1a80a3b7f22e21d3f8b3eec33c49200e6"
     }
   },
   "schemaVersion": "3.0.19",
-  "updatedAt": "2019-11-27T18:55:52.993Z",
+  "updatedAt": "2019-12-07T22:10:20.229Z",
   "networkType": "ethereum",
   "devdoc": {
     "methods": {
