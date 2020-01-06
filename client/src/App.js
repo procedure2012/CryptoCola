@@ -1,57 +1,63 @@
-/*import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}*/
-
 import React from "react";
-import ColaFactory from "./contracts/ColaFactory.json";
-import ColaMixture from "./contracts/ColaMixture.json";
-import ColaPresentation from "./contracts/ColaPresentation.json";
 import ColaOwnership from "./contracts/ColaOwnership.json";
 
 class App extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = { web3js: null, colaFactory: null, colaMixture: null, colaPresentation: null, colaOwnership: null };
+		this.state = { 
+			accountInterval: null,
+			colaOwnership: 
+				new this.props.web3js.eth.Contract(ColaOwnership.abi, "0x1e24C4B5C1AA0295236d0822A8F7d52a236e86cE"),
+			userAccount: null,
+			vlue: "myname",
+			colas: [],
+			count: 0,
+		};
+		
+		this.handleChange = this.handleChange.bind(this);
+		this.handleClick= this.handleClick.bind(this);
 	}
 
 	componentDidMount() {
-		var colaFactoryABI = ColaFactory.abi;
-		var colaMixtureABI = ColaMixture.abi;
-		var colaPresentationABI = ColaPresentation.abi;
-		var colaOwnershipABI = ColaOwnership.abi;
-		this.setState((state, props) => ({
-			web3js: props.web3js,
-			colaFactory: new props.web3js.eth.Contract(colaFactoryABI, "0x88f29Bc914E82Ef1A87825cfE8CABA665f646d12"),
-			colaMixture: new props.web3js.eth.Contract(colaMixtureABI, "0x6B415564b1B281902726624E641d8e819Cb3F968"),
-			colaPresentation: new props.web3js.eth.Contract(colaPresentationABI, "0x630fF42a8869b77BCaceE4774f5d7014f9a6f9a7"),
-			colaOwnership: new props.web3js.eth.Contract(colaOwnershipABI, "0x88f29Bc914E82Ef1A87825cfE8CABA665f646d12")
-		}));
+		(async () => {
+			//if (this.state.colaOwnership === null || this.state.userAccount === null) return;
+			let accounts = await this.props.web3js.eth.getAccounts();
+			//console.log(accounts);
+			this.setState({userAccount: accounts[0]});
+			let count = await this.state.colaOwnership.methods.getCountByOwner(accounts[0]).call();
+			//console.log(count);
+			this.setState({count: count});
+			//if (this.state.colaOwnership === null || this.state.userAccount === null) return;
+			let results = await this.state.colaOwnership.methods.getColaByOwner(this.state.userAccount).call();
+			let items = [];
+			for (let result in results) {
+				let cola = await this.state.colaOwnership.methods.colas(result).call();
+				items.push(cola);
+				//console.log(num);
+			}
+			this.setState({colas: items});
+		}) ();
+
+	}
+	
+	handleChange(event) {
+		this.setState({value: event.target.value});
+	}
+
+	handleClick(event) {
+		this.state.colaOwnership.methods.produceRandomCola(this.state.value).send({from: this.state.userAccount});
 	}
 
 	render() {
+		let names = this.state.colas.map((cola) => <li key={cola.code}> {cola.name} </li>);
 		return (
-			<div> {console.log(this.state.colaFactory)} </div>
+			<div>
+				<input type="text" value={this.state.value} onChange={this.handleChange} />
+				<button onClick={this.handleClick}>submit</button>
+				<div>The Cola(s) of {this.state.userAccount} is</div>
+				<div>{this.state.count}</div>
+				<div>{names}</div>
+			</div>
 		)
 	}
 }

@@ -7,14 +7,15 @@ contract ColaPresentation is ColaMixture {
                 return ownerColaCount[_owner];
         }
 
-        function getColaByOwner(address _owner, uint _number) public view returns(string memory, uint, uint8, uint32, uint) {
-                require(_number < ownerColaCount[_owner]);
-                uint count = 0;
+        function getColaByOwner(address _owner) public view returns(uint[] memory) {
+		uint[] memory result = new uint[](ownerColaCount[_owner]);
+		uint count = 0;
                 for (uint i = 0; i < colas.length; ++i) 
                         if (colaToOwner[i] == _owner) {
-                                if (count == _number) return (colas[i].name, colas[i].code, colas[i].level, colas[i].readyTime, colas[i].price);
-                                ++count;
+				result[count] = i;
+				count++;
                         }
+		return result;
         }
         
         function getColaMarket(uint _number) public view returns(string memory, uint, uint8, uint32, uint) {

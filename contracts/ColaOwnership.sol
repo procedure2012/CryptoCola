@@ -1,9 +1,9 @@
 pragma solidity ^0.5.8;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721Full.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "./ColaPresentation.sol";
 
-contract ColaOwnership is ColaPresentation, ERC721Full {
+contract ColaOwnership is ColaPresentation, ERC721 {
         mapping (uint => address) colaApprovals;
 
         function balanceOf(address _owner) public view returns (uint256 _balance) {
@@ -13,6 +13,12 @@ contract ColaOwnership is ColaPresentation, ERC721Full {
         function ownerOf(uint256 _tokenId) public view returns (address _owner) {
                 return colaToOwner[_tokenId];
         }
+
+	/*function safeTransferFrom(address _from, address _to, uint256 _tokenId, bytes data) external payable {
+	}
+
+	function safeTransferFrom(address _from, address _to, uint256 _tokenId) external payable {
+	}*/
 
         function transferFrom(address _from, address _to, uint256 _tokenId) public {
                 require(msg.sender == colaToOwner[_tokenId]);
@@ -28,9 +34,16 @@ contract ColaOwnership is ColaPresentation, ERC721Full {
                 emit Approval(msg.sender, _approved, _tokenId);
         }
 
+	/*function setApprovalForAll(address _operator, bool _approved) external {
+	}*/
+
         function getApproved(uint256 _tokenId) public view returns (address) {
                 return colaApprovals[_tokenId];
         }
+
+	/*function isApprovedForAll(address _owner, address _operator) external view returns (bool) {
+		return false;
+	}*/
 
         function takeOwnership(uint256 _tokenId) public {
                 require(msg.sender == colaApprovals[_tokenId]);
