@@ -22,9 +22,9 @@ contract ColaFactory is Ownable {
         Cola[] public colas; 
 
         mapping (uint => address) public colaToOwner;
-        mapping (address => uint) ownerColaCount;
+        mapping (address => uint) public ownerColaCount;
 
-        uint32 cooldownTime = 1 days;
+        uint32 cooldownTime = 1 minutes;//need to consider
 
         function setCooldownTime(uint32 _cooldownTime) public /*onlyOwner*/ {
                 cooldownTime = _cooldownTime;

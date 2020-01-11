@@ -4208,10 +4208,116 @@
       "links": {},
       "address": "0x2Ac1535bA102B9C8Ec926119E78cb2e8cDE2f3a2",
       "transactionHash": "0xd1ab76dd417d4a9ab57f3fbe71690fc8e55206a39756dd9a0460499d92533873"
+    },
+    "1578590942886": {
+      "events": {
+        "0xa64b6d0dcd584cf22e064bd7e637a7ebc7fe4f635054a8372c1a56b34b2b728b": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "colaId",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "string",
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "code",
+              "type": "uint256"
+            }
+          ],
+          "name": "NewCola",
+          "type": "event",
+          "signature": "0xa64b6d0dcd584cf22e064bd7e637a7ebc7fe4f635054a8372c1a56b34b2b728b"
+        },
+        "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "previousOwner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferred",
+          "type": "event",
+          "signature": "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0"
+        }
+      },
+      "links": {},
+      "address": "0xD53656e0A46c5d326ADc5dcFF726722eeFC724D8",
+      "transactionHash": "0x9d1417856a08a0271543d04618579ea6f3037e92375643d5c4cee466382f5124"
+    },
+    "1578675018943": {
+      "events": {
+        "0xa64b6d0dcd584cf22e064bd7e637a7ebc7fe4f635054a8372c1a56b34b2b728b": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "colaId",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "string",
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "code",
+              "type": "uint256"
+            }
+          ],
+          "name": "NewCola",
+          "type": "event",
+          "signature": "0xa64b6d0dcd584cf22e064bd7e637a7ebc7fe4f635054a8372c1a56b34b2b728b"
+        },
+        "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "previousOwner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferred",
+          "type": "event",
+          "signature": "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0"
+        }
+      },
+      "links": {},
+      "address": "0x3DAd7deB0C5aE1e9F777cd43B75C44F6a52cf557",
+      "transactionHash": "0x320b9df841cbbdbcd87472a8f92ad861104cb50f1e91a769a3710e6cb86bf76d"
     }
   },
   "schemaVersion": "3.0.19",
-  "updatedAt": "2020-01-06T15:39:57.348Z",
+  "updatedAt": "2020-01-10T16:53:02.208Z",
   "networkType": "ethereum",
   "devdoc": {
     "methods": {

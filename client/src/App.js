@@ -28,9 +28,9 @@ function App(props) {
 
 	return (
 		<Switch>
-			<Route path='/show' render={() => (<Show web3js={web3js}/>)} />
+			<Route path='/show/:select' render={(props) => (<Show {...props} web3js={web3js}/>)} />
 			<Route path='/buy' component={Buy}/>
-			<Route path='/mating' component={Mating}/>
+			<Route path='/mating' render={(props) => (<Mating {...props} web3js={web3js}/>)}/>
 		</Switch>
 	)
 }
