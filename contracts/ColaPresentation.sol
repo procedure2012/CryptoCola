@@ -1,40 +1,80 @@
 pragma solidity ^0.5.8;
 
-import "./ColaMixture.sol";
+import "./ColaOwnership.sol";
 
-contract ColaPresentation is ColaMixture {
-        function getCountByOwner(address _owner) public view returns(uint) {
-                return ownerColaCount[_owner];
-        }
+contract ColaPresentation is ColaOwnership {
+	struct Auction {
+		address seller;
+		uint price;
+		bool isOn;
+	}
+
+	mapping (uint => Auction) public colaToAuction;
+
+	function isOnAuction(Auction storage _auction) internal view returns(bool) {
+		return _auction.isOn;
+	}
+
+	function removeAuction(uint _colaId) internal {
+		delete colaToAuction[_colaId];
+	}
+
+	function getCountByOwner(address _owner) public view returns(uint) {
+		uint count = 0;
+		for (uint i = 0; i < colas.length; ++i) 
+			if ((colaToOwner[i] == _owner) || ((isOnAuction(colaToAuction[i])) && (colaToAuction[i].seller == _owner)))
+				count++;
+		return count;
+	}
 
         function getColaByOwner(address _owner) public view returns(uint[] memory) {
-		uint[] memory result = new uint[](ownerColaCount[_owner]);
 		uint count = 0;
                 for (uint i = 0; i < colas.length; ++i) 
-                        if (colaToOwner[i] == _owner) {
+                        if ((colaToOwner[i] == _owner) || (isOnAuction(colaToAuction[i]) && (colaToAuction[i].seller == _owner))) 
+				count++;
+		uint[] memory result = new uint[](count);
+		count = 0;
+		for (uint i = 0; i < colas.length; ++i) 
+                        if ((colaToOwner[i] == _owner) || (isOnAuction(colaToAuction[i]) && (colaToAuction[i].seller == _owner))) {
 				result[count] = i;
 				count++;
                         }
 		return result;
         }
         
-        function getColaMarket(uint _number) public view returns(string memory, uint, uint8, uint32, uint) {
+        function getColaMarket() public view returns(uint[] memory) {
 		uint count = 0;
                 for (uint i = 0; i < colas.length; ++i) 
-                        if (colas[i].price > 0) 
-				if (count == _number)
-                                	return (colas[i].name, colas[i].code, colas[i].level, colas[i].readyTime, colas[i].price);
-		return ('', 0, 0, 0, 0);
+                        if (isOnAuction(colaToAuction[i])) count++;
+		uint[] memory result = new uint[](count);
+		count = 0;
+		for (uint i = 0; i < colas.length; ++i)
+			if (isOnAuction(colaToAuction[i])){
+				result[count] = i;
+				count++;
+			}
+		return result;
         }
 
         function sellCola(uint _colaId, uint _price) external {
                 require(msg.sender == colaToOwner[_colaId]);
-                colas[_colaId].price = _price;
+		colaToAuction[_colaId] = Auction(msg.sender, _price*10**18, true);
+		transferFrom(msg.sender, address(this), _colaId);
         }
 
+	function cancelSellCola(uint _colaId) external {
+		require(isOnAuction(colaToAuction[_colaId]));
+		require(msg.sender == colaToAuction[_colaId].seller);
+		transferFrom(address(this), msg.sender, _colaId);
+		removeAuction(_colaId);
+	}
+
         function buyCola(uint _colaId) external payable {
-                require(msg.value >= colas[_colaId].price);
-                address payable seller = address(uint160(colaToOwner[_colaId]));
-                seller.transfer(msg.value);
+		require(isOnAuction(colaToAuction[_colaId]));
+		require(colaToAuction[_colaId].price <= msg.sender.balance);
+                address payable seller = address(uint160(colaToAuction[_colaId].seller));
+                seller.transfer(colaToAuction[_colaId].price);
+		transferFrom(address(this), msg.sender, _colaId);
+		removeAuction(_colaId);
         }
 }

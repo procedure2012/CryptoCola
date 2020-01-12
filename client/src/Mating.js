@@ -1,23 +1,23 @@
 import React from "react";
-import ColaOwnership from "./contracts/ColaOwnership.json";
+import ColaPresentation from "./contracts/ColaPresentation.json";
 import { Link } from 'react-router-dom';
 
 class Mating extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			colaOwnership:
-				new this.props.web3js.eth.Contract(ColaOwnership.abi, "0x06123Fa63C8C9b2B636f164160Bd1669405Fb4ee"),
+			colaPresentation:
+				new this.props.web3js.eth.Contract(ColaPresentation.abi, "0xc6235Eb6FfeEDF3C02BF193904050A5a5e110014"),
 			userAccount: null,
 			value: "name"
 		};
-		this.handleClick= this.handleClick.bind(this);
-		this.handleChange= this.handleChange.bind(this);
+		this.handleClick = this.handleClick.bind(this);
+		this.handleChange = this.handleChange.bind(this);
 	}
 
 	componentDidMount() {
 		(async () => {
-			//if (this.state.colaOwnership === null || this.state.userAccount === null) return;
+			//if (this.state.colaPresentation === null || this.state.userAccount === null) return;
 			let accounts = await this.props.web3js.eth.getAccounts();
 			//console.log(accounts);
 			this.setState({userAccount: accounts[0]});
@@ -26,8 +26,8 @@ class Mating extends React.Component {
 
 	}
 
-	handleClick(event) {
-		this.state.colaOwnership.methods.mixCola(this.state.value, this.props.location.state.father.id, this.props.location.state.mother.id).send({from: this.state.userAccount}).then(() => {this.props.history.push("/show/false")});
+	handleClick() {
+		this.state.colaPresentation.methods.mixCola(this.state.value, this.props.location.state.father.id, this.props.location.state.mother.id).send({from: this.state.userAccount}).then(() => {this.props.history.push("/show/false")});
 	}
 
 	handleChange(event) {
@@ -37,7 +37,7 @@ class Mating extends React.Component {
 	render() {
 		console.log(this.props);
 		let motherItem;
-		this.state.colaOwnership.methods.colas(1).call().then((result) => {console.log(result)});
+		this.state.colaPresentation.methods.colas(1).call().then((result) => {console.log(result)});
 		if (this.props.location.state.mother === undefined) {
 			motherItem = <Link to={{
 					pathname: '/show/true',

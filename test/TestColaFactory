@@ -3,17 +3,19 @@ pragma solidity ^0.5.8;
 import "truffle/Assert.sol";
 import "truffle/DeployedAddresses.sol";
 import "../contracts/ColaPresentation.sol";
+import "../contracts/ColaOwnership.sol";
 
 contract TestColaFactory {
         address expectedOwner = address(this);
         ColaPresentation colaPresentation = ColaPresentation(DeployedAddresses.ColaPresentation());
+	ColaOwnership colaOwnership = ColaOwnership(DeployedAddresses.ColaOwnership());
 
-        function testsetCooldownTime() public {
-                uint32 expectedCooldownTime = 0 days;
-                colaPresentation.setCooldownTime(expectedCooldownTime);
-                uint32 returnedCooldownTime = colaPresentation.getCooldownTime();
-                Assert.equal(uint(returnedCooldownTime), uint(expectedCooldownTime), "The cooldown time should be update.");
-        }
+	function testBuyCola() public {
+		colaOwnership.produceRandomCola("1");
+		colaOwnership.produceRandomCola("2");
+		colaOwnership.mixCola("3", 0, 1);
+		colaOwnership.buyCola(3);
+	}
 
         function testProduceRandomCola() public {
                 colaPresentation.produceRandomCola("test");
@@ -25,7 +27,7 @@ contract TestColaFactory {
                 uint8 resultLevel;
                 uint32 resultReadyTime;
                 (resultName, resultCode, resultLevel, resultReadyTime, ) =
-                        colaPresentation.getColaByOwner(expectedOwner, uint(0));
+                        colaPresentation.getColaByOwner(expectedOwner);
                 string memory expectedName = "test";
                 uint expectedCode = uint(keccak256(abi.encodePacked("test"))) % (10**16);
                 uint8 expectedLevel = 0;
@@ -61,7 +63,7 @@ contract TestColaFactory {
 
         }
 
-	function testMarket() public {
+	/*function testMarket() public {
 		colaPresentation.sellCola(0, (0.004 ether));
 		uint resultPrice;
 		string memory resultName;
@@ -78,5 +80,5 @@ contract TestColaFactory {
 		(resultName,resultCode,resultLevel,resultReadyTime,resultPrice) = colaPresentation.getColaMarket(2);
 		Assert.equal(resultCode, 0, "The empty signal is wrong.");
 		Assert.equal(resultPrice, 0, "The empty signal is wrong.");
-	}
+	}*/
 }

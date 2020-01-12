@@ -1,5 +1,5 @@
 import React from "react";
-import ColaOwnership from "./contracts/ColaOwnership.json";
+import ColaPresentation from "./contracts/ColaPresentation.json";
 import { Link } from 'react-router-dom';
 
 class Show extends React.Component {
@@ -7,8 +7,8 @@ class Show extends React.Component {
 		super(props);
 		this.state = { 
 			accountInterval: null,
-			colaOwnership: 
-				new this.props.web3js.eth.Contract(ColaOwnership.abi, "0x06123Fa63C8C9b2B636f164160Bd1669405Fb4ee"),
+			colaPresentation: 
+				new this.props.web3js.eth.Contract(ColaPresentation.abi, "0xc6235Eb6FfeEDF3C02BF193904050A5a5e110014"),
 			userAccount: null,
 			vlue: "myname",
 			colas: [],
@@ -21,19 +21,20 @@ class Show extends React.Component {
 
 	componentDidMount() {
 		(async () => {
-			//if (this.state.colaOwnership === null || this.state.userAccount === null) return;
+			//if (this.state.colaPresentation === null || this.state.userAccount === null) return;
 			let accounts = await this.props.web3js.eth.getAccounts();
 			//console.log(accounts);
 			this.setState({userAccount: accounts[0]});
-			let count = await this.state.colaOwnership.methods.getCountByOwner(accounts[0]).call();
-			//console.log(count);
+			let count = await this.state.colaPresentation.methods.getCountByOwner(accounts[0]).call();
 			this.setState({count: count});
-			console.log(count);
-			//if (this.state.colaOwnership === null || this.state.userAccount === null) return;
-			let results = await this.state.colaOwnership.methods.getColaByOwner(this.state.userAccount).call();
+			//console.log(count);
+			//if (this.state.colaPresentation === null || this.state.userAccount === null) return;
+			let a = await this.state.colaPresentation.methods.colaToAuction(2).call();
+			console.log(a);
+			let results = await this.state.colaPresentation.methods.getColaByOwner(this.state.userAccount).call();
 			let items = [];
-			for (let result in results) {
-				let cola = await this.state.colaOwnership.methods.colas(result).call();
+			for (let result of results) {
+				let cola = await this.state.colaPresentation.methods.colas(result).call();
 				cola.id = result;
 				items.push(cola);
 				//console.log(num);
@@ -47,13 +48,13 @@ class Show extends React.Component {
 		this.setState({value: event.target.value});
 	}
 
-	handleClick(event) {
-		this.state.colaOwnership.methods.produceRandomCola(this.state.value).send({from: this.state.userAccount});
+	handleClick() {
+		this.state.colaPresentation.methods.produceRandomCola(this.state.value).send({from: this.state.userAccount});
 	}
 
 	render() {
 		let names;
-		console.log(this.props);
+		//console.log(this.props);
 		if (this.props.match.params.select === 'false') {
 			names = this.state.colas.map((cola) => (
 				<li key={cola.code}>
@@ -64,6 +65,12 @@ class Show extends React.Component {
 							father: cola
 						}
 					}}>Mating</Link></p>
+					<p><Link to={{
+						pathname: '/sell',
+						state: {
+							cola: cola
+						}
+					}}>Sell</Link></p>
 				</li>
 			));
 		}

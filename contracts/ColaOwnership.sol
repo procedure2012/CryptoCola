@@ -1,9 +1,9 @@
 pragma solidity ^0.5.8;
 
+import "./ColaMixture.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "./ColaPresentation.sol";
 
-contract ColaOwnership is ColaPresentation, ERC721 {
+contract ColaOwnership is ColaMixture, ERC721 {
         mapping (uint => address) colaApprovals;
 
         function balanceOf(address _owner) public view returns (uint256 _balance) {
@@ -21,7 +21,7 @@ contract ColaOwnership is ColaPresentation, ERC721 {
 	}*/
 
         function transferFrom(address _from, address _to, uint256 _tokenId) public {
-                require(msg.sender == colaToOwner[_tokenId]);
+                require((_from == address(this)) || (msg.sender == colaToOwner[_tokenId]));
                 ownerColaCount[_to] = ownerColaCount[_to].add(1);
                 ownerColaCount[_from] = ownerColaCount[_from].sub(1);
                 colaToOwner[_tokenId] = _to;

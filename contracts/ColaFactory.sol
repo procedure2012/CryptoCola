@@ -11,10 +11,9 @@ contract ColaFactory is Ownable {
 
         event NewCola(uint colaId, string name, uint code);
 
-        struct Cola{
+        struct Cola {
                 string name;
                 uint code;
-                uint price;
                 uint8 level;
                 uint32 readyTime;
         }
@@ -35,7 +34,7 @@ contract ColaFactory is Ownable {
         }
 
         function _produceCola(string memory _name, uint _code) internal {
-                uint id = colas.push(Cola(_name, _code, 0, 0, uint32(now + cooldownTime))) - 1;
+                uint id = colas.push(Cola(_name, _code, 0, uint32(now + cooldownTime))) - 1;
                 colaToOwner[id] = msg.sender;
                 ownerColaCount[msg.sender]++;
                 emit NewCola(id, _name, _code);
