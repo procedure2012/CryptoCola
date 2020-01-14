@@ -6,7 +6,7 @@ class Buy extends React.Component {
 		super(props);
 		this.state = {
 			colaPresentation:
-				new this.props.web3js.eth.Contract(ColaPresentation.abi, "0xc6235Eb6FfeEDF3C02BF193904050A5a5e110014"),
+				new this.props.web3js.eth.Contract(ColaPresentation.abi, "0xead8D1F7306555c61B32bd180f6322a7c8dD0578"),
 			userAccount: null,
 			colas: []
 		};
@@ -33,16 +33,18 @@ class Buy extends React.Component {
 	}
 
 	handleClick(cola) {
-		//console.log(cola.price);
-		this.state.colaPresentation.methods.colaToOwner(cola.id).call().then((seller) => {
-			console.log(seller);
-			console.log(cola.price*10**18);
-			this.state.colaPresentation.methods.buyCola(cola.id).send({from: this.state.userAccount, value: cola.price*10**18}).then(() => {
-				console.log(seller);
-				console.log(this.state.userAccount);
-				console.log(cola.id);
-				this.props.history.push('/show/false');
-			});
+		/*console.log(cola.id);
+		console.log(this.state.colaPresentation.methods);
+		(async () => {
+			//let count = await this.state.colaPresentation.methods.getCountByOwner(this.state.userAccount).call();
+			await this.state.colaPresentation.methods.buyCola(cola.id).send({from: this.state.userAccount, gasLimit: 1000000});
+		}) ();*/
+		//this.props.web3js.eth.getBalance(this.state.userAccount).then(console.log);
+		//this.state.colaPresentation.methods.colaToAuction(cola.id).call().then((result) => {console.log(result.price)});
+		this.state.colaPresentation.methods.buyCola(cola.id).send({from: this.state.userAccount, gasLimit: 1000000}).then(() => {
+			console.log(this.state.userAccount);
+			console.log(cola.id);
+			this.props.history.push('/show/false');
 		});
 	}
 

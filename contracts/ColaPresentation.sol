@@ -70,8 +70,8 @@ contract ColaPresentation is ColaOwnership {
 	}
 
         function buyCola(uint _colaId) external payable {
-		require(isOnAuction(colaToAuction[_colaId]));
-		require(colaToAuction[_colaId].price <= msg.sender.balance);
+		require(isOnAuction(colaToAuction[_colaId]), "not in sale");
+		require(colaToAuction[_colaId].price <= msg.sender.balance, "you don't have enough money");
                 address payable seller = address(uint160(colaToAuction[_colaId].seller));
                 seller.transfer(colaToAuction[_colaId].price);
 		transferFrom(address(this), msg.sender, _colaId);

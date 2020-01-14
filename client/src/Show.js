@@ -8,7 +8,7 @@ class Show extends React.Component {
 		this.state = { 
 			accountInterval: null,
 			colaPresentation: 
-				new this.props.web3js.eth.Contract(ColaPresentation.abi, "0xc6235Eb6FfeEDF3C02BF193904050A5a5e110014"),
+				new this.props.web3js.eth.Contract(ColaPresentation.abi, "0xead8D1F7306555c61B32bd180f6322a7c8dD0578"),
 			userAccount: null,
 			vlue: "myname",
 			colas: [],
