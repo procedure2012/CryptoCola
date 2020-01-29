@@ -46,7 +46,7 @@ contract ColaFactory is Ownable {
         }
 
         function produceRandomCola(string memory _name) public {
-                require(ownerColaCount[msg.sender] < 2);
+                //require(ownerColaCount[msg.sender] < 2);
                 uint randCode = _generateRandomCode(_name);
                 _produceCola(_name, randCode);
         }
