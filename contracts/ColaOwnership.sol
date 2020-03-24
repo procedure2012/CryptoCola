@@ -1,9 +1,12 @@
 pragma solidity ^0.5.8;
 
 import "./ColaMixture.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "../node_modules/@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
-contract ColaOwnership is ColaMixture, ERC721 {
+contract ColaOwnership is ColaMixture/*, ERC721*/ {
+        event Transfer(address indexed from, address indexed to, uint256 indexed tokenId);
+        event Approval(address indexed owner, address indexed approved, uint256 indexed tokenId);
+    
         mapping (uint => address) colaApprovals;
 
         function balanceOf(address _owner) public view returns (uint256 _balance) {

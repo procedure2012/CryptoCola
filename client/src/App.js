@@ -3,6 +3,7 @@ import Show from './Show';
 import Buy from './Buy';
 import Mating from './Mating';
 import Sell from './Sell';
+import Welcome from './welcome.js';
 import { Switch, Route } from 'react-router-dom';
 import Web3 from "web3";
 
@@ -29,6 +30,7 @@ function App(props) {
 
 	return (
 		<Switch>
+            <Route path='/' exact component={Welcome} />
 			<Route path='/show/:select' render={(props) => (<Show {...props} web3js={web3js}/>)} />
 			<Route path='/buy' render={(props) => (<Buy {...props} web3js={web3js}/>)}/>
 			<Route path='/sell' render={(props) => (<Sell {...props} web3js={web3js}/>)}/>

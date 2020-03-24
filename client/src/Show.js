@@ -1,6 +1,8 @@
 import React from "react";
 import ColaPresentation from "./contracts/ColaPresentation.json";
 import { Link } from 'react-router-dom';
+import { Container, Row, Col, Button, Card } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 class Show extends React.Component {
 	constructor(props) {
@@ -8,7 +10,7 @@ class Show extends React.Component {
 		this.state = { 
 			accountInterval: null,
 			colaPresentation: 
-				new this.props.web3js.eth.Contract(ColaPresentation.abi, "0xead8D1F7306555c61B32bd180f6322a7c8dD0578"),
+				new this.props.web3js.eth.Contract(ColaPresentation.abi, "0xB07bE22286d545BfA46b6BA3742C5C67956bcD27"),
 			userAccount: null,
 			vlue: "myname",
 			colas: [],
@@ -29,8 +31,8 @@ class Show extends React.Component {
 			this.setState({count: count});
 			//console.log(count);
 			//if (this.state.colaPresentation === null || this.state.userAccount === null) return;
-			let a = await this.state.colaPresentation.methods.colaToAuction(2).call();
-			console.log(a);
+			//let a = await this.state.colaPresentation.methods.colaToAuction(2).call();
+			//console.log(a);
 			let results = await this.state.colaPresentation.methods.getColaByOwner(this.state.userAccount).call();
 			let items = [];
 			for (let result of results) {
@@ -53,50 +55,79 @@ class Show extends React.Component {
 	}
 
 	render() {
-		let names;
-		//console.log(this.props);
-		if (this.props.match.params.select === 'false') {
-			names = this.state.colas.map((cola) => (
-				<li key={cola.code}>
-					<p>{cola.code}</p>
-					<p><Link to={{
-						pathname: '/mating',
+        let colaList;
+        if (this.props.match.params.select === 'false') {
+            colaList = this.state.colas.map((cola) => (
+                <Card>
+                    <Card.Img variant="top" src="https://imgur.com/l0TCFn8.jpg"></Card.Img>
+                    <Card.Body>
+                        <Card.Title>{cola.name}</Card.Title>
+                        <Card.Text>{cola.code}</Card.Text>
+                    </Card.Body>
+                    <div>
+                    <Link to={{
+				        pathname: '/mating',
+					    state: {
+					        father: cola
+				        }
+				    }}><Button variant="primary" block>Mix</Button></Link>
+                    <br/>
+                    <Link to={{
+				        pathname: '/sell',
+				        state: {
+				            cola: cola
+					    }
+			        }}><Button variant="primary" block>Sell</Button></Link>
+                    </div>
+                </Card>
+            ));
+        }
+        else {
+            colaList = this.state.colas.map((cola) => (
+                <Card>
+                    <Card.Img variant="top" src="https://imgur.com/l0TCFn8.jpg"></Card.Img>
+                    <Card.Body>
+                        <Card.Title>{cola.name}</Card.Title>
+                        <Card.Text>{cola.code}</Card.Text>
+                    </Card.Body>
+                    <Link to={{
+					    pathname: '/mating',
 						state: {
-							father: cola
+						    father: this.props.location.state.father,
+						    mother: cola
 						}
-					}}>Mating</Link></p>
-					<p><Link to={{
-						pathname: '/sell',
-						state: {
-							cola: cola
-						}
-					}}>Sell</Link></p>
-				</li>
-			));
-		}
-		else {
-			names = this.state.colas.map((cola) => (
-				<li key={cola.code}>
-					<p>{cola.code}</p>
-					<p><Link to={{
-						pathname: '/mating',
-						state: {
-							father: this.props.location.state.father,
-							mother: cola
-						}
-					}}>choose as a mother</Link></p>
-				</li>
-			));
+					}}><Button variant="primary">choose as a mother</Button></Link>
+                </Card>
+            ));
+        }
 
-		}
+        let colList=[], rowList=[];
+        colaList.forEach((colaItem, index) => {
+                var item = (
+                    <Col xs={3} md={3} lg={3}>{colaItem}</Col>
+                );
+                colList.push(item);
+
+                if (((index % 3) === 0 && (index !== 0)) || (index === colaList.length-1)) {
+                        item = (
+                            <Row>
+                                {colList}
+                            </Row>
+                        );
+                        rowList.push(item);
+                        colList = [];
+                }
+        });
+		
 		return (
+            <Container>
 			<div>
 				<input type="text" value={this.state.value} onChange={this.handleChange} />
 				<button onClick={this.handleClick}>submit</button>
-				<div>The Cola(s) of {this.state.userAccount} is</div>
-				<div>{this.state.count}</div>
-				<div>{names}</div>
+				<div class="text-center"><h1>The Cola(s) of {this.state.userAccount} is {this.state.count}</h1></div>
+				<div>{rowList}</div>
 			</div>
+            </Container>
 		)
 	}
 }

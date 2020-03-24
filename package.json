@@ -12,7 +12,7 @@
   "author": "procedure2012",
   "license": "ISC",
   "dependencies": {
-    "@openzeppelin/contracts": "^2.4.0",
+    "@openzeppelin/contracts": "^2.5.0",
     "eth-json-rpc-errors": "^1.1.0",
     "eth-json-rpc-middleware": "^4.2.0",
     "web3": "^1.2.4"

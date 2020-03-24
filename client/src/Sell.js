@@ -1,12 +1,13 @@
 import React from 'react';
 import ColaPresentation from './contracts/ColaPresentation.json';
+import { Container, Card, Button, ButtonToolbar, Row, Col } from 'react-bootstrap';
 
 class Sell extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			colaPresentation:
-				new this.props.web3js.eth.Contract(ColaPresentation.abi, "0xead8D1F7306555c61B32bd180f6322a7c8dD0578"),
+				new this.props.web3js.eth.Contract(ColaPresentation.abi, "0xB07bE22286d545BfA46b6BA3742C5C67956bcD27"),
 			userAccount: null,
 			value: "cost"
 		};
@@ -30,13 +31,27 @@ class Sell extends React.Component {
 	}
 
 	render() {
-		console.log(this.props.location);
 		return (
-			<div>
-				<h1>{this.props.location.state.cola.code}</h1>
-				<input type="text" value={this.state.value} onChange={this.handleChange} />
-				<button onClick={this.handleClick}>Sell</button>
-			</div>
+            <Container>
+                <div class="text-center"><h1>Selling...</h1></div>
+                <Row>
+                    <Col></Col>
+                    <Col>
+                        <Card>
+                            <Card.Img variant="top" src="https://imgur.com/awUcYbQ.jpg"></Card.Img>
+                            <Card.Body>
+                                <Card.Title>{this.props.location.state.cola.name}</Card.Title>
+                                <Card.Text>{this.props.location.state.cola.code} as father</Card.Text>
+                            </Card.Body>
+                            <ButtonToolbar className="justify-content-between" aria-label="Toolbar with Button groups">
+				                <input type="text" value={this.state.value} onChange={this.handleChange} />
+				                <Button variant="primary" onClick={this.handleClick}>Sell</Button>
+                            </ButtonToolbar>
+                        </Card>
+                    </Col>
+                    <Col></Col>
+                </Row>
+			</Container>
 		);
 	};
 }
