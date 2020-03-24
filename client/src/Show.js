@@ -14,11 +14,9 @@ class Show extends React.Component {
 			userAccount: null,
 			vlue: "myname",
 			colas: [],
-			count: 0,
+            colaSale: [],
+			//count: 0,
 		};
-		
-		this.handleChange = this.handleChange.bind(this);
-		this.handleClick= this.handleClick.bind(this);
 	}
 
 	componentDidMount() {
@@ -27,31 +25,32 @@ class Show extends React.Component {
 			let accounts = await this.props.web3js.eth.getAccounts();
 			//console.log(accounts);
 			this.setState({userAccount: accounts[0]});
-			let count = await this.state.colaPresentation.methods.getCountByOwner(accounts[0]).call();
-			this.setState({count: count});
+			//let count = await this.state.colaPresentation.methods.getCountByOwner(accounts[0]).call();
+			//this.setState({count: count});
 			//console.log(count);
 			//if (this.state.colaPresentation === null || this.state.userAccount === null) return;
 			//let a = await this.state.colaPresentation.methods.colaToAuction(2).call();
 			//console.log(a);
 			let results = await this.state.colaPresentation.methods.getColaByOwner(this.state.userAccount).call();
 			let items = [];
+            let sales = [];
 			for (let result of results) {
 				let cola = await this.state.colaPresentation.methods.colas(result).call();
+                let auction = await this.state.colaPresentation.methods.colaToAuction(result).call();
+                //console.log(auction);
 				cola.id = result;
-				items.push(cola);
-				//console.log(num);
+                if (auction.isOn) {
+                    cola.price = auction.price / (10**18);
+                    sales.push(cola); 
+                } else items.push(cola);
 			}
-			this.setState({colas: items});
+			this.setState({colas: items, colaSale: sales});
 		}) ();
 
 	}
 	
-	handleChange(event) {
-		this.setState({value: event.target.value});
-	}
-
-	handleClick() {
-		this.state.colaPresentation.methods.produceRandomCola(this.state.value).send({from: this.state.userAccount});
+	handleClick(cola) {
+		this.state.colaPresentation.methods.cancelSellCola(cola.id).send({from: this.state.userAccount});
 	}
 
 	render() {
@@ -118,15 +117,44 @@ class Show extends React.Component {
                         colList = [];
                 }
         });
-		
+        let colas1 = rowList;
+
+        let saleItems = this.state.colaSale.map((saleItem) => (
+            <Card>
+                <Card.Img variant="top" src="https://imgur.com/l0TCFn8.jpg"></Card.Img>
+                <Card.Body>
+                    <Card.Title>{saleItem.name}</Card.Title>
+                    <Card.Text>{saleItem.price} ETH</Card.Text>
+                </Card.Body>
+                <Button variant="primary" onClick={this.handleClick.bind(this, saleItem)}>Cancel</Button>
+            </Card>
+        ));
+
+		colList=[];rowList=[];
+        saleItems.forEach((saleItem, index) => {
+                var item = (
+                    <Col xs={3} md={3} lg={3}>{saleItem}</Col>
+                );
+                colList.push(item);
+
+                if (((index % 3) === 0 && (index !== 0)) || (index === saleItems.length-1)) {
+                        item = (
+                            <Row>
+                                {colList}
+                            </Row>
+                        );
+                        rowList.push(item);
+                        colList = [];
+                }
+        });
+        let colas2 = rowList;
+
 		return (
             <Container>
-			<div>
-				<input type="text" value={this.state.value} onChange={this.handleChange} />
-				<button onClick={this.handleClick}>submit</button>
-				<div class="text-center"><h1>The Cola(s) of {this.state.userAccount} is {this.state.count}</h1></div>
-				<div>{rowList}</div>
-			</div>
+				<div class="text-center"><h1>The Colas on stock are {colaList.length}</h1></div>
+				{colas1}
+                <div class="text-center"><h1>The Colas on sale are {saleItems.length}</h1></div>
+                {colas2}
             </Container>
 		)
 	}
