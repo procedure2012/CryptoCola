@@ -54,7 +54,7 @@ class Buy extends React.Component {
 	}
 
     handleClick2() {
-		this.state.colaPresentation.methods.produceRandomCola(this.state.value).send({from: this.state.userAccount}).then(() => {
+		this.state.colaPresentation.methods.produceRandomCola(this.state.value).send({from: this.state.userAccount, value: 2*(10**18)}).then(() => {
             this.props.history.push('/show/false');
         });
     }
