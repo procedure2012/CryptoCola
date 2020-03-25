@@ -17,7 +17,7 @@ contract ColaMixture is ColaFactory {
         }
 
         function mixCola(string memory _name, uint _colaId1, uint _colaId2) public {
-                require(msg.sender == colaToOwner[_colaId1] && msg.sender == colaToOwner[_colaId2]);
+                require(msg.sender == colaToOwner[_colaId1] && msg.sender == colaToOwner[_colaId2], "You don't own these two colas!");
                 Cola storage cola1 = colas[_colaId1];
                 Cola storage cola2 = colas[_colaId2];
                 if (_isReady(cola1) && _isReady(cola2)) {

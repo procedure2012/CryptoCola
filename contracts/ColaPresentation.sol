@@ -57,22 +57,22 @@ contract ColaPresentation is ColaOwnership {
     }
 
     function sellCola(uint _colaId, uint _price) external {
-        require(msg.sender == colaToOwner[_colaId]);
+        require(msg.sender == colaToOwner[_colaId], "You don not own this cola!");
 		colaToAuction[_colaId] = Auction(msg.sender, _price*10**18, true);
 		transferFrom(msg.sender, address(this), _colaId);
     }
 
 	function cancelSellCola(uint _colaId) external {
-		require(isOnAuction(colaToAuction[_colaId]));
-		require(msg.sender == colaToAuction[_colaId].seller);
+		require(isOnAuction(colaToAuction[_colaId]), "This cola is not for sale!");
+		require(msg.sender == colaToAuction[_colaId].seller, "You don not own this cola!");
 		transferFrom(address(this), msg.sender, _colaId);
 		removeAuction(_colaId);
 	}
 
     function buyCola(uint _colaId) external payable {
-		require(isOnAuction(colaToAuction[_colaId]), "not in sale");
-		require(msg.value == colaToAuction[_colaId].price);
-		require(msg.value <= msg.sender.balance, "you don't have enough money");
+		require(isOnAuction(colaToAuction[_colaId]), "This cola is not for sale!");
+		require(msg.value == colaToAuction[_colaId].price, "The price is wrong!");
+		require(msg.value <= msg.sender.balance, "You don't have enough money!");
         address payable seller = address(uint160(colaToAuction[_colaId].seller));
         seller.transfer(msg.value);
 		transferFrom(address(this), msg.sender, _colaId);

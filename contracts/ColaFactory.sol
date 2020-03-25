@@ -8,7 +8,7 @@ contract ColaFactory {
 
         uint codeDigits = 16;
         uint codeModulus = 10 ** codeDigits;
-        address owner = 0xD180b9c883F692dFB4E01Ad3b76d1C8ceF5f969F;
+        address owner = 0x6d849eaD5D243124a1c50B88011439757965E7ae;
 
         event NewCola(uint colaId, string name, uint code);
 
@@ -27,12 +27,12 @@ contract ColaFactory {
         uint32 cooldownTime = 1 minutes;//need to consider
 
         function setCooldownTime(uint32 _cooldownTime) public {
-            require(msg.sender == owner);
+            require(msg.sender == owner, "Only the owner can change the cooldown time!");
             cooldownTime = _cooldownTime;
         }
 
         function setOwner(address _newOwner) external {
-            require(msg.sender == owner);
+            require(msg.sender == owner, "Only the current owner can change the ownership!");
             owner = _newOwner;
         }
 
@@ -53,8 +53,8 @@ contract ColaFactory {
         }
 
         function produceRandomCola(string memory _name) public payable {
-            require(ownerColaCount[msg.sender] < 2);
-            require(msg.sender.balance >= 2*(10**18), "insufficient ETH");
+            require(ownerColaCount[msg.sender] < 2, "Wait for the cooldown!");
+            require(msg.sender.balance >= 2*(10**18), "You don't have enough ETH");
             require(msg.value == 2*(10**18));
             address payable receiever = address(uint160(owner));
             receiever.transfer(msg.value);

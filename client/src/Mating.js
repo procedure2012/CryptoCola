@@ -8,7 +8,7 @@ class Mating extends React.Component {
 		super(props);
 		this.state = {
 			colaPresentation:
-				new this.props.web3js.eth.Contract(ColaPresentation.abi, "0xB07bE22286d545BfA46b6BA3742C5C67956bcD27"),
+				new this.props.web3js.eth.Contract(ColaPresentation.abi, "0xdcDf9b74959856f0Fab1713043EAAA4A36E4631e"),
 			userAccount: null,
 			value: "name"
 		};

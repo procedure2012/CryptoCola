@@ -1,13 +1,14 @@
 import React from "react";
 import ColaPresentation from "./contracts/ColaPresentation.json";
-import { Container, Card, Button, Row, Col } from "react-bootstrap";
+import ColaList from './ColaList.js';
+import { Container, Card, Button } from "react-bootstrap";
 
 class Buy extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			colaPresentation:
-				new this.props.web3js.eth.Contract(ColaPresentation.abi, "0xB07bE22286d545BfA46b6BA3742C5C67956bcD27"),
+				new this.props.web3js.eth.Contract(ColaPresentation.abi, "0xdcDf9b74959856f0Fab1713043EAAA4A36E4631e"),
 			userAccount: null,
             count: 0,
             value: "myname",
@@ -44,7 +45,7 @@ class Buy extends React.Component {
 	handleClick(cola) {
 		//console.log(cola.id);
         this.state.colaPresentation.methods.colaToAuction(cola.id).call().then((auction) => {
-            console.log(auction);
+            //console.log(auction);
 		    this.state.colaPresentation.methods.buyCola(cola.id).send({from: this.state.userAccount, value: auction.price}).then(() => {
 			    this.props.history.push('/show/false');
 		    });
@@ -55,6 +56,7 @@ class Buy extends React.Component {
 
     handleClick2() {
 		this.state.colaPresentation.methods.produceRandomCola(this.state.value).send({from: this.state.userAccount, value: 2*(10**18)}).then(() => {
+                //console.log(2*(10**18));
             this.props.history.push('/show/false');
         });
     }
@@ -75,24 +77,6 @@ class Buy extends React.Component {
             </Card>
 		));
 
-        let colList=[], rowList=[];
-        colaList.forEach((colaItem, index) => {
-            var item = (
-                <Col xs={3} md={3} lg={3}>{colaItem}</Col>
-            );
-            colList.push(item);
-
-            if (((index % 3) === 0 && (index !== 0)) || (index === colaList.length-1)) {
-                item = (
-                    <Row>
-                        {colList}
-                    </Row>
-                );
-                rowList.push(item);
-                colList = [];
-            }
-        });
-
 		return (
 			<Container>
                 <div class="text-center"><h1>Produce you own colas(&lt;2)!</h1>
@@ -100,7 +84,7 @@ class Buy extends React.Component {
 				    <Button onClick={this.handleClick2} disabled={this.state.count>=2}>submit(2 ETH)</Button>
                 </div>
 				<div class="text-center"><h1>Or just buy one!</h1></div>
-                {rowList}
+                <ColaList items={colaList} />
 			</Container>
 		)
 	}

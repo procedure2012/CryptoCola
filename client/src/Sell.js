@@ -7,7 +7,7 @@ class Sell extends React.Component {
 		super(props);
 		this.state = {
 			colaPresentation:
-				new this.props.web3js.eth.Contract(ColaPresentation.abi, "0xB07bE22286d545BfA46b6BA3742C5C67956bcD27"),
+				new this.props.web3js.eth.Contract(ColaPresentation.abi, "0xdcDf9b74959856f0Fab1713043EAAA4A36E4631e"),
 			userAccount: null,
 			value: "cost"
 		};
@@ -38,10 +38,10 @@ class Sell extends React.Component {
                     <Col></Col>
                     <Col>
                         <Card>
-                            <Card.Img variant="top" src="https://imgur.com/awUcYbQ.jpg"></Card.Img>
+                            <Card.Img variant="top" src="https://imgur.com/l0TCFn8.jpg"></Card.Img>
                             <Card.Body>
                                 <Card.Title>{this.props.location.state.cola.name}</Card.Title>
-                                <Card.Text>{this.props.location.state.cola.code} as father</Card.Text>
+                                <Card.Text>{this.props.location.state.cola.code}</Card.Text>
                             </Card.Body>
                             <ButtonToolbar className="justify-content-between" aria-label="Toolbar with Button groups">
 				                <input type="text" value={this.state.value} onChange={this.handleChange} />

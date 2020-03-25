@@ -1,7 +1,8 @@
 import React from "react";
 import ColaPresentation from "./contracts/ColaPresentation.json";
+import ColaList from './ColaList.js';
 import { Link } from 'react-router-dom';
-import { Container, Row, Col, Button, Card } from 'react-bootstrap';
+import { Container, Button, Card } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 class Show extends React.Component {
@@ -10,7 +11,7 @@ class Show extends React.Component {
 		this.state = { 
 			accountInterval: null,
 			colaPresentation: 
-				new this.props.web3js.eth.Contract(ColaPresentation.abi, "0xB07bE22286d545BfA46b6BA3742C5C67956bcD27"),
+				new this.props.web3js.eth.Contract(ColaPresentation.abi, "0xdcDf9b74959856f0Fab1713043EAAA4A36E4631e"),
 			userAccount: null,
 			vlue: "myname",
 			colas: [],
@@ -100,25 +101,6 @@ class Show extends React.Component {
             ));
         }
 
-        let colList=[], rowList=[];
-        colaList.forEach((colaItem, index) => {
-                var item = (
-                    <Col xs={3} md={3} lg={3}>{colaItem}</Col>
-                );
-                colList.push(item);
-
-                if (((index % 3) === 0 && (index !== 0)) || (index === colaList.length-1)) {
-                        item = (
-                            <Row>
-                                {colList}
-                            </Row>
-                        );
-                        rowList.push(item);
-                        colList = [];
-                }
-        });
-        let colas1 = rowList;
-
         let saleItems = this.state.colaSale.map((saleItem) => (
             <Card>
                 <Card.Img variant="top" src="https://imgur.com/l0TCFn8.jpg"></Card.Img>
@@ -130,31 +112,12 @@ class Show extends React.Component {
             </Card>
         ));
 
-		colList=[];rowList=[];
-        saleItems.forEach((saleItem, index) => {
-                var item = (
-                    <Col xs={3} md={3} lg={3}>{saleItem}</Col>
-                );
-                colList.push(item);
-
-                if (((index % 3) === 0 && (index !== 0)) || (index === saleItems.length-1)) {
-                        item = (
-                            <Row>
-                                {colList}
-                            </Row>
-                        );
-                        rowList.push(item);
-                        colList = [];
-                }
-        });
-        let colas2 = rowList;
-
-		return (
+	    return (
             <Container>
 				<div class="text-center"><h1>The Colas on stock are {colaList.length}</h1></div>
-				{colas1}
+                <ColaList items={colaList} />
                 <div class="text-center"><h1>The Colas on sale are {saleItems.length}</h1></div>
-                {colas2}
+                <ColaList items={saleItems} />
             </Container>
 		)
 	}
