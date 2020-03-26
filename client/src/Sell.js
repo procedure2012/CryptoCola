@@ -7,7 +7,7 @@ class Sell extends React.Component {
 		super(props);
 		this.state = {
 			colaPresentation:
-				new this.props.web3js.eth.Contract(ColaPresentation.abi, "0xdcDf9b74959856f0Fab1713043EAAA4A36E4631e"),
+				new this.props.web3js.eth.Contract(ColaPresentation.abi, "0x0DE3C6e5cF4D6ca09375d0d4B0170F3aa5EB2085"),
 			userAccount: null,
 			value: "cost"
 		};
