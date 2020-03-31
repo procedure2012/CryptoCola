@@ -73,6 +73,8 @@ cd client
 npm install
 ```
 
+You also need to install MetaMask for your browser. The account in MetaMask will be you identifiers.
+
 ## Usage
 First, start `ganache` and remember the mnemonic. Using them as the account seed phrase to import all accounts.
 ```sh
